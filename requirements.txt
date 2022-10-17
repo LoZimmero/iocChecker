@@ -1,0 +1,11 @@
+requests>=2.20.0
+configparser>=3.5.0
+pymisp>=2.4.123
+OTXv2
+malwarebazaar.api
+subprocess
+csv
+datetime
+os
+json
+dateutil.parser
