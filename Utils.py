@@ -44,7 +44,6 @@ def get_misp_connect (misp_url,misp_key):
     return misp
 
 # opentip kaspersky
-
 def get_indicator_kasper(type,value,kasperkey):
     
     time.sleep(5)
@@ -84,14 +83,20 @@ def query_urlhaus_host(indicator):
     return json_response_host
 
 # Virus Total
-def get_indicator_vt(type,value,vtkey):
+def get_indicator_vt(type,value,key_list):
     
     url = 'https://www.virustotal.com/api/v3/search?query=' + value
-    try:
-        time.sleep(5)
-        result = requests.get(url, headers={'X-Apikey': vtkey}).json()
-    except Exception as e:
-        print(e)
+    time.sleep(5)
+
+    result = None
+    for key in key_list:
+        try:
+            res = requests.get(url, headers={'X-Apikey': key})
+            if res.status_code == 200 and res.json():
+                result = res.json()
+                break
+        except Exception as e:
+            print(e)
     return result
 
 

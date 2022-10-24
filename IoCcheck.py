@@ -8,8 +8,6 @@ from dateutil.parser import parse
 import configparser
 import Utils
 
-
-
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', help='Name of the ini file that holds the API keys', metavar='ini-file',
                     default=os.path.dirname(os.path.abspath(__file__)) + '\my.ini')
@@ -34,7 +32,10 @@ if args.i:
 
 
 def vt_search():
-    indicator_vt_details = Utils.get_indicator_vt(row['indicator_type'], row['indicator'], virustotalkey)
+    key_list = []
+    for k in virustotalkey.split(','):
+        key_list.append(k.strip())
+    indicator_vt_details = Utils.get_indicator_vt(row['indicator_type'], row['indicator'], key_list)
     if 'data' in indicator_vt_details :
      if len(indicator_vt_details['data']) > 0:
         res_vt = indicator_vt_details['data'][0]
