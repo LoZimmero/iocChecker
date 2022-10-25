@@ -373,8 +373,8 @@ def OpenTipKasper_search(type):
     for k in kasperkey.split(','):
         key_list.append(k.strip())
     indicator_kasper_details = Utils.get_indicator_kasper(type, row['indicator'], key_list)
-    if len(indicator_kasper_details) > 0 and not "\n" in indicator_kasper_details:
-        res_jes = json.loads(indicator_kasper_details[0])  # as the result is string we convert it to json
+    if indicator_kasper_details:
+        res_jes = indicator_kasper_details  # as the result is string we convert it to json
         if type == 'ip':
           if  'IpWhoIs' in res_jes:
             if 'Created' in res_jes['IpWhoIs']['Net']:
