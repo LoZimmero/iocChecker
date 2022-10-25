@@ -11,7 +11,8 @@ import Utils
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', help='Name of the ini file that holds the API keys', metavar='ini-file',
                     default=os.path.dirname(os.path.abspath(__file__)) + '\my.ini')
-parser.add_argument("-f", "--inputfile", type=argparse.FileType('r'), help="file one")
+parser.add_argument("-f", "--inputfile", type=argparse.FileType('r'), help="file one",
+                    default=os.path.dirname(os.path.abspath(__file__)) + '\\test.csv')
 args = parser.parse_args()
 
 
@@ -368,7 +369,10 @@ def MISP_search():
 
 # opentip kasper
 def OpenTipKasper_search(type):
-    indicator_kasper_details = Utils.get_indicator_kasper(type, row['indicator'], kasperkey)
+    key_list = []
+    for k in kasperkey.split(','):
+        key_list.append(k.strip())
+    indicator_kasper_details = Utils.get_indicator_kasper(type, row['indicator'], key_list)
     if len(indicator_kasper_details) > 0 and not "\n" in indicator_kasper_details:
         res_jes = json.loads(indicator_kasper_details[0])  # as the result is string we convert it to json
         if type == 'ip':

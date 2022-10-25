@@ -44,14 +44,19 @@ def get_misp_connect (misp_url,misp_key):
     return misp
 
 # opentip kaspersky
-def get_indicator_kasper(type,value,kasperkey):
+def get_indicator_kasper(type,value,key_list):
     
     time.sleep(5)
-    command = 'curl' + ' ' + '--request GET'+' '+'https://opentip.kaspersky.com/api/v1/search/'+type+'?request='+value+' '+'--header x-api-key:'+kasperkey
-    p = subprocess.Popen(command,
-                        universal_newlines=True, shell=True, stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE)
-    result=p.stdout.readlines()
+    result = None
+    url = 'https://opentip.kaspersky.com/api/v1/search/' + type + '?request='+ value+' '
+    for key in key_list:
+        try:
+            res = requests.get(url, headers={'x-api-key': key})
+            if res.status_code == 200 and res.json():
+                result = res.json()
+                break
+        except Exception as e:
+            print(e)
     return result
 
 
