@@ -7,6 +7,7 @@ import json
 from pymisp import PyMISP
 import subprocess
 import requests
+import urllib3
 import time
 
 

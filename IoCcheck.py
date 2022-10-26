@@ -7,6 +7,7 @@ import IndicatorTypes
 from dateutil.parser import parse
 import configparser
 import Utils
+import urllib3
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', help='Name of the ini file that holds the API keys', metavar='ini-file',
@@ -651,7 +652,7 @@ def UrlHaus_search(type):
 
 
 if __name__ == '__main__':
-
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     if args.inputfile:
         r = csv.reader(args.inputfile)
         data = [line for line in r]
