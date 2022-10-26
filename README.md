@@ -9,5 +9,5 @@ python -m pip install -r requirements.txt
 ## Execution
 run from command line 
 ```
-python IoCcheck.py -i my.ini -f test.csv
+python IoCcheck.py -i example.ini -f test.csv
 ```

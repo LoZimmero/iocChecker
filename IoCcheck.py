@@ -798,5 +798,10 @@ if __name__ == '__main__':
 
         #resultfilejson = Utils.generateResultFilename('finalresult.json')
         resultfilejson = Utils.generateResultFilename(os.path.splitext(os.path.basename(args.inputfile.name))[0]+'.json')
-        with open(resultfilejson, 'w') as writejson:
+        
+        # Create output directory
+        if not os.path.exists('output') or not os.path.isdir('output'):
+            os.makedirs('output')
+        
+        with open(f'output/{resultfilejson}', 'w') as writejson:
             json.dump(pulses, writejson, sort_keys=True, indent=4, default=str, ensure_ascii=False)
