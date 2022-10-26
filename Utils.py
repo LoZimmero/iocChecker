@@ -49,11 +49,14 @@ def get_indicator_kasper(type,value,key_list):
     time.sleep(5)
     result = None
     url = 'https://opentip.kaspersky.com/api/v1/search/' + type + '?request='+ value+' '
+    c=0
     for key in key_list:
+        c+=1
         try:
             res = requests.get(url, headers={'x-api-key': key})
             if res.status_code == 200 and res.json():
                 result = res.json()
+                print('using kaspersky key n.'+c+' out of '+len(key_list))
                 break
         except Exception as e:
             print(e)
@@ -92,13 +95,15 @@ def get_indicator_vt(type,value,key_list):
     
     url = 'https://www.virustotal.com/api/v3/search?query=' + value
     time.sleep(5)
-
+    c=0
     result = None
     for key in key_list:
+        c+=1
         try:
             res = requests.get(url, headers={'X-Apikey': key})
             if res.status_code == 200 and res.json():
                 result = res.json()
+                print('using VirusTotal key n.'+c+' out of '+len(key_list))
                 break
         except Exception as e:
             print(e)
