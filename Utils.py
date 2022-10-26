@@ -56,7 +56,7 @@ def get_indicator_kasper(type,value,key_list):
             res = requests.get(url, headers={'x-api-key': key})
             if res.status_code == 200 and res.json():
                 result = res.json()
-                print('using kaspersky key n.'+c+' out of '+len(key_list))
+                print('using kaspersky key n.'+str(c)+' out of '+str(len(key_list)))
                 break
         except Exception as e:
             print(e)
@@ -103,7 +103,7 @@ def get_indicator_vt(type,value,key_list):
             res = requests.get(url, headers={'X-Apikey': key})
             if res.status_code == 200 and res.json():
                 result = res.json()
-                print('using VirusTotal key n.'+c+' out of '+len(key_list))
+                print('using VirusTotal key n.'+str(c)+' out of '+str(len(key_list)))
                 break
         except Exception as e:
             print(e)
