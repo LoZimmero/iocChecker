@@ -148,13 +148,11 @@ def json_to_csv_row(json_obj: dict, separator: str = ';;') -> str:
 def main(source_path: str, destination_file: str):
 
     csv_data = []
-    headers = ''
     # MAIN
     for file in os.listdir(source_path):
         json_obj_list = json.loads(open(os.path.join('output', file)).read())
         for json_obj in json_obj_list:
             res = process_json(json_obj)
-            headers = res.keys()
             res = json_to_csv_row(res)
             csv_data.append(res)
     
