@@ -1,7 +1,7 @@
 import os
 import json
 
-KEYS = ['indicator','indicator_type', 'label', 'user', 'twitter_link', 'alienvault_date',
+KEYS = ['indicator','indicator_type', 'label', 'user', 'twitter_link', 'twitter_date','alienvault_date',
 'hashlookup_date', 'kaspersky_date', 'mwbazar_date', 'misp_date', 'urlhaus_date', 'virustotal_date']
 
 def populate_date(source_json: dict, destination_json: dict, source_date_field_name: str, destination_date_field_name: str):
@@ -158,8 +158,7 @@ def main(source_path: str, destination_file: str):
     
     with open(destination_file, 'w+') as f:
         # write headers
-        for header in KEYS:
-            f.write(header + ';;')
+        f.write(';;'.join(KEYS))
         f.write('\n')
         # write data
         for d in csv_data:
