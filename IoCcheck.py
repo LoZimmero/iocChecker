@@ -34,7 +34,7 @@ if args.i:
 
 
 def vt_search():
-    key_list = []
+    key_list: list[str] = []
     for k in virustotalkey.split(','):
         key_list.append(k.strip())
     indicator_vt_details = Utils.get_indicator_vt(row['indicator_type'], row['indicator'], key_list)

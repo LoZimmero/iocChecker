@@ -133,7 +133,7 @@ def process_json(obj: dict) -> dict:
 
     return result_obj
 
-def json_to_csv_row(json_obj: dict, separator: str = ';;') -> str:
+def json_to_csv_row(json_obj: dict, separator: str = ',') -> str:
     """Converts from JSON to csv entry
     """
     res = ''
@@ -158,7 +158,7 @@ def main(source_path: str, destination_file: str):
     
     with open(destination_file, 'w+') as f:
         # write headers
-        f.write(';;'.join(KEYS))
+        f.write(','.join(KEYS))
         f.write('\n')
         # write data
         for d in csv_data:

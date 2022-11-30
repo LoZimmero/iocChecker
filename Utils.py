@@ -92,7 +92,7 @@ def query_urlhaus_host(indicator):
     return json_response_host
 
 # Virus Total
-def get_indicator_vt(type,value,key_list):
+def get_indicator_vt(type,value,key_list: list[str]):
     
     url = 'https://www.virustotal.com/api/v3/search?query=' + value
     time.sleep(5)
