@@ -1,8 +1,11 @@
 import os
 import json
+from dateutil.parser import parse
 
 KEYS = ['indicator','indicator_type', 'label', 'user', 'twitter_link', 'twitter_date','alienvault_date',
-'hashlookup_date', 'kaspersky_date', 'mwbazar_date', 'misp_date', 'urlhaus_date', 'virustotal_date']
+'hashlookup_date', 'kaspersky_date', 'mwbazar_date', 'misp_date', 'urlhaus_date', 'virustotal_date','tw_to_av','is_av_before',
+'hl_to_av','is_hl_before','k_to_av','is_k_before','misp_to_av','is_misp_before','ul_to_av','is_ul_before',
+'tw_to_vt', 'is_vt_before']
 
 def populate_date(source_json: dict, destination_json: dict, source_date_field_name: str, destination_date_field_name: str):
     try:
@@ -130,6 +133,31 @@ def process_json(obj: dict) -> dict:
     populate_misp_date(obj, result_obj)
     populate_urlhaus_date(obj, result_obj)
     populate_virustotal_date(obj, result_obj)
+    
+    # add dates
+    if result_obj.get('twitter_date') and result_obj.get('alienvault_date'):
+        result_obj['tw_to_av'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('alienvault_date')).timestamp()
+        result_obj['is_av_before'] = True if result_obj['tw_to_av'] > 0 else False
+
+    if result_obj.get('twitter_date') and result_obj.get('hashlookup_date'):
+        result_obj['hl_to_av'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('hashlookup_date')).timestamp()
+        result_obj['is_hl_before'] = True if result_obj['hl_to_av'] > 0 else False
+
+    if result_obj.get('twitter_date') and result_obj.get('kaspersky_date'):
+        result_obj['k_to_av'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('kaspersky_date')).timestamp()
+        result_obj['is_k_before'] = True if result_obj['k_to_av'] > 0 else False
+
+    if result_obj.get('twitter_date') and result_obj.get('misp_date'):
+        result_obj['misp_to_av'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('misp_date')).timestamp()
+        result_obj['is_misp_before'] = True if result_obj['misp_to_av'] > 0 else False
+
+    if result_obj.get('twitter_date') and result_obj.get('urlhaus_date'):
+        result_obj['ul_to_av'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('urlhaus_date')).timestamp()
+        result_obj['is_ul_before'] = True if result_obj['ul_to_av'] > 0 else False
+
+    if result_obj.get('twitter_date') and result_obj.get('virustotal_date'):
+        result_obj['tw_to_vt'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('virustotal_date')).timestamp()
+        result_obj['is_vt_before'] = True if result_obj['tw_to_vt'] > 0 else False
 
     return result_obj
 
@@ -138,7 +166,7 @@ def json_to_csv_row(json_obj: dict, separator: str = ',') -> str:
     """
     res = ''
     for k in KEYS:
-        res += json_obj.get(k) or ''
+        res += str(json_obj.get(k)) or ''
         res += separator
     
     # remove last separator character
