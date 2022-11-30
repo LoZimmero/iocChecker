@@ -4,7 +4,7 @@ from dateutil.parser import parse
 
 KEYS = ['indicator','indicator_type', 'label', 'user', 'twitter_link', 'twitter_date','alienvault_date',
 'hashlookup_date', 'kaspersky_date', 'mwbazar_date', 'misp_date', 'urlhaus_date', 'virustotal_date','tw_to_av','is_av_before',
-'hl_to_av','is_hl_before','k_to_av','is_k_before','misp_to_av','is_misp_before','ul_to_av','is_ul_before',
+'tw_to_hl','is_hl_before','tw_to_k','is_k_before','tw_to_misp','is_misp_before','tw_to_ul','is_ul_before',
 'tw_to_vt', 'is_vt_before']
 
 def populate_date(source_json: dict, destination_json: dict, source_date_field_name: str, destination_date_field_name: str):
@@ -140,20 +140,20 @@ def process_json(obj: dict) -> dict:
         result_obj['is_av_before'] = True if result_obj['tw_to_av'] > 0 else False
 
     if result_obj.get('twitter_date') and result_obj.get('hashlookup_date'):
-        result_obj['hl_to_av'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('hashlookup_date')).timestamp()
-        result_obj['is_hl_before'] = True if result_obj['hl_to_av'] > 0 else False
+        result_obj['tw_to_hl'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('hashlookup_date')).timestamp()
+        result_obj['is_hl_before'] = True if result_obj['tw_to_hl'] > 0 else False
 
     if result_obj.get('twitter_date') and result_obj.get('kaspersky_date'):
-        result_obj['k_to_av'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('kaspersky_date')).timestamp()
-        result_obj['is_k_before'] = True if result_obj['k_to_av'] > 0 else False
+        result_obj['tw_to_k'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('kaspersky_date')).timestamp()
+        result_obj['is_k_before'] = True if result_obj['tw_to_k'] > 0 else False
 
     if result_obj.get('twitter_date') and result_obj.get('misp_date'):
-        result_obj['misp_to_av'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('misp_date')).timestamp()
-        result_obj['is_misp_before'] = True if result_obj['misp_to_av'] > 0 else False
+        result_obj['tw_to_misp'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('misp_date')).timestamp()
+        result_obj['is_misp_before'] = True if result_obj['tw_to_misp'] > 0 else False
 
     if result_obj.get('twitter_date') and result_obj.get('urlhaus_date'):
-        result_obj['ul_to_av'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('urlhaus_date')).timestamp()
-        result_obj['is_ul_before'] = True if result_obj['ul_to_av'] > 0 else False
+        result_obj['tw_to_ul'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('urlhaus_date')).timestamp()
+        result_obj['is_ul_before'] = True if result_obj['tw_to_ul'] > 0 else False
 
     if result_obj.get('twitter_date') and result_obj.get('virustotal_date'):
         result_obj['tw_to_vt'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('virustotal_date')).timestamp()
