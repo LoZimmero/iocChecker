@@ -5,7 +5,7 @@ from dateutil.parser import parse
 KEYS = ['indicator','indicator_type', 'label', 'user', 'twitter_link', 'twitter_date','alienvault_date',
 'hashlookup_date', 'kaspersky_date', 'mwbazar_date', 'misp_date', 'urlhaus_date', 'virustotal_date','tw_to_av','is_av_before',
 'tw_to_hl','is_hl_before','tw_to_k','is_k_before','tw_to_misp','is_misp_before','tw_to_ul','is_ul_before',
-'tw_to_vt', 'is_vt_before']
+'tw_to_vt', 'is_vt_before', 'tw_to_mwbazar', 'is_mwbazar_before']
 
 def populate_date(source_json: dict, destination_json: dict, source_date_field_name: str, destination_date_field_name: str):
     try:
@@ -108,7 +108,6 @@ def populate_urlhaus_date(source_json: dict, destination_json: dict) -> None:
 def populate_virustotal_date(source_json: dict, destination_json: dict) -> None:
     populate_date(source_json, destination_json, 'virustime', 'virustotal_date')
 
-
 def process_json(obj: dict) -> dict:
     """This function analyzes a single json object.
     """
@@ -158,6 +157,10 @@ def process_json(obj: dict) -> dict:
     if result_obj.get('twitter_date') and result_obj.get('virustotal_date'):
         result_obj['tw_to_vt'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('virustotal_date')).timestamp()
         result_obj['is_vt_before'] = True if result_obj['tw_to_vt'] > 0 else False
+
+    if result_obj.get('twitter_date') and result_obj.get('mwbazar_date'):
+        result_obj['tw_to_mwbazar'] = parse(result_obj.get('twitter_date')).timestamp() - parse(result_obj.get('mwbazar_date')).timestamp()
+        result_obj['is_mwbazar_before'] = True if result_obj['tw_to_mwbazar'] > 0 else False
 
     return result_obj
 
